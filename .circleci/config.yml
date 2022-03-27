@@ -54,8 +54,8 @@ jobs:
     steps:
       - checkout
       - *show-current-branch
-      - *restore-cache
       - *install-dependencies
+      - *restore-cache
       - *save-cache
 
   deploy-to-aws-s3:
@@ -82,6 +82,10 @@ workflows:
   deploy-to-aws-s3:
     jobs:
       - build
-      - deploy-to-aws-s3
+      - deploy-to-aws-s3:
+           requires:
+             - build
+             
+      
     
         
