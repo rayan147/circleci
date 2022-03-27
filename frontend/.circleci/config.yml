@@ -1,59 +1,71 @@
 version: 2.1
 
-jobs:
-  build:
-    docker:
-      - image: circleci/node:17.7.2
-    working_directory: ~/repo
-    steps:
-      - checkout
-      - run:
-          name: check node version
-          command: node --version
-      - run:
-          name: Show the current branch
-          command: echo $CIRCLE_BRANCH
-      - restore_cache:
-          key: 
-           - app-{{checksum "package.json"}}
-           - app-
-      - run:
-          name: Install dependencies
-          command: npm install
-      - save_cache:
+executors:
+   app-executor:
+     docker:
+       - image: cimg/node:17.7.2
+     working_directory: ~/repo
+aliases:
+  - &show-current-branch
+      run:
+        name: show current branch
+        command: echo $CIRCLE_BRANCH
+  - &restore-cache
+       restore_cache:
+             keys: 
+               - app-{{checksum "package.json"}}
+               - app-
+  - &install-dependencies
+       run:
+         name: install dependencies
+         command: npm install
+  - &save-cache
+     save_cache:
           paths:
             - node_modules
-          key: app-{{checksum "package.json"}}
-  deploy-to-aws-s3:
-    docker:
-      - image: circleci/node:17.7.2
-    working_directory: ~/repo
-    steps:
-      - checkout
-      - run:
-          name: check node version
-          command: node --version
-      - run:
-          name: Show the current branch
-          command: echo $CIRCLE_BRANCH
-      - run:
-          name: Installing AWS CLI version 2.x
-          working_directory: /
-          command: |
+          key:  app-{{checksum "package.json"}}
+
+  - &installing-awscliv2
+       run:
+        name: Installing AWS CLI version 2.x
+        working_directory: /
+        command: |
              curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" 
              unzip awscliv2.zip 
              sudo ./aws/install
              rm -rf awscliv2.zip
              rm -rf aws
              aws --version
-      - run:
-          name: Building the application
-          command: |
+  - &build-app
+       run:
+         name: Building the application
+         command: |
               npm install
               npm run build
               cd build
               zip ../build.zip -r * .[^.]*
               echo "Build successful"
+
+
+
+jobs:
+  build:
+    executor: app-executor  
+    steps:
+      - checkout
+      - *show-current-branch
+      - *restore-cache
+      - *install-dependencies
+      - *save-cache
+
+  deploy-to-aws-s3:
+    executor: app-executor
+    steps:
+      - checkout
+      - *show-current-branch
+      - *installing-awscliv2
+      - *build-app
+  
       - run:
           name: Deploy to AWS S3
           command: |
@@ -66,5 +78,10 @@ jobs:
             else
               echo "No branch found"
             fi
+workflows:
+  deploy-to-aws-s3:
+    jobs:
+      - build
+      - deploy-to-aws-s3
     
         
