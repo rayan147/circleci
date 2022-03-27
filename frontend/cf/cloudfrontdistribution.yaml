@@ -1,0 +1,13 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Creates a cloudfront distrinution for our prod,stage and dev environments"
+
+Resources:
+  S3CDN:
+    Type: AWS::CLoudFront::Distribution
+    Properties:
+        DistributionConfig:
+          Comment: "CDN for our website"
+          Aliases:
+          - !Join ["",[!]]
+                  
+    

@@ -1,0 +1,19 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "creates a full access to s3 bucket"
+
+Resources:
+  S3AccessPolicy:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      Groups:
+        - "circleci"
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Effect: "Allow"
+          Action:
+          - s3:*
+          Resource: "*"
+      PolicyName: "S3AccessPolicy"
+
+

@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description:  "Allow s3:GetObject permission for all objects in the bucket"
+
+Resources:
+  S3BucketPermissionProd:
+    Type: "AWS::S3::BucketPolicy"
+    Properties:
+        Bucket: prod-rayan147-bucket
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          - Action:
+              - "s3:GetObject"
+            Effect: "Allow"
+            Principal: "*"
+            Resource:
+              - "arn:aws:s3:::prod-rayan147-bucket/*"
+   
+  S3BucketPermissionStage:
+    Type: "AWS::S3::BucketPolicy"
+    Properties:
+        Bucket: stage-rayan147-bucket
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          - Action:
+            - "s3:GetObject"
+            Effect: "Allow"
+            Principal: "*"
+            Resource:
+            - "arn:aws:s3:::stage-rayan147-bucket/*"
+  S3BucketPermissionDev:
+    Type: "AWS::S3::BucketPolicy"
+    Properties:
+        Bucket: dev-rayan147-bucket
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          - Action:
+            - "s3:GetObject"
+            Effect: "Allow"
+            Principal: "*"
+            Resource:
+            - "arn:aws:s3:::dev-rayan147-bucket/*"

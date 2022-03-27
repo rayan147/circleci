@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Creates three s3 buckets, prod,stage, and dev"
+
+Resources:
+  ProdS3:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      BucketName: prod-rayan147-bucket
+      AccessControl: "PublicRead"
+      VersioningConfiguration: 
+        Status: "Enabled"
+      WebsiteConfiguration:
+            IndexDocument: "index.html"
+            ErrorDocument: "error.html"
+        
+  StageS3:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      BucketName: stage-rayan147-bucket
+      AccessControl: "PublicRead"
+      VersioningConfiguration: 
+        Status: "Enabled"
+      WebsiteConfiguration:
+           IndexDocument: "index.html"
+           ErrorDocument: "error.html"
+      
+  DevS3:
+     Type: "AWS::S3::Bucket"
+     Properties:
+       BucketName: dev-rayan147-bucket
+       AccessControl: "PublicRead"
+       VersioningConfiguration: 
+            Status: "Enabled"
+       WebsiteConfiguration:
+            IndexDocument: "index.html"
+            ErrorDocument: "error.html"
+  

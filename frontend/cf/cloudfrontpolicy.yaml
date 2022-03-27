@@ -1,0 +1,18 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "create a policy,full access to cloudfront"
+
+Resources:
+  CloudFrontAccessPolicy:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      Groups:
+        - "circleci"
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Effect: "Allow"
+          Action:
+          - cloudfront:*
+          Resource: "*"
+      PolicyName: "CloudFrontAccessPolicy"
+
