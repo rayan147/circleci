@@ -80,6 +80,7 @@ jobs:
             cd ~/repo/cf
             sudo chmod +x ./create-s3-bucket.sh
             ./create-s3-bucket.sh
+            echo "S3 bucket created"
 
 
       
