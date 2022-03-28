@@ -66,11 +66,15 @@ jobs:
     description: "Run tests"
     executor: app-executor
     steps:
+      - checkout
+      - show-current-branch
+      - install-dependencies
+      - restore-cache
+      - save-cache
       - run:
           name: Run tests
           command: |
             cd ~/repo
-            npm install
             npm run test
             echo "Tests successful"
   build:
