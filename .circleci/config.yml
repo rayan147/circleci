@@ -63,19 +63,15 @@ commands:
      steps:
         - run:
             name: Create IAM user
-            environment:
-               IAM_TEMPLATE_NAME:iamstack
             command: |
-              aws cloudformation create-stack --stack-name $IAM_TEMPLATE_NAME --template-body file://cf/iam.yaml --capabilities CAPABILITY_NAMED_IAM
+              aws cloudformation create-stack --stack-name iamstack --template-body file://cf/iam.yaml --capabilities CAPABILITY_NAMED_IAM
   create-s3-all-policy:
       description: "Create S3 all policy"
       steps:
           - run:
               name: Create S3 all policy
-              environment:
-                S3_ALL_POLICY_NAME: s3-all-policy-stack
               command: |
-                aws cloudformation create-stack --stack-name $S3_ALL_POLICY_NAME --template-body file://cf/s3policy.yaml --capabilities CAPABILITY_NAMED_IAM
+                aws cloudformation create-stack --stack-name s3-all-policy-stack --template-body file://cf/s3policy.yaml --capabilities CAPABILITY_NAMED_IAM
   create-s3buckets:
       description: "Create S3 buckets"
       steps:
@@ -84,17 +80,15 @@ commands:
             environment:
               S3_TEMPLATE_BUCKET_NAME: s3bucketstack
             command: |
-              aws cloudformation create-stack --stack-name $S3_TEMPLATE_BUCKET_NAME --template-body file://cf/s3buckets.yaml 
+              aws cloudformation create-stack --stack-name s3bucketstack--template-body file://cf/s3buckets.yaml 
             
   create-s3bucket-policy:
       description: "Create S3 bucket policy"
       steps:
         - run:
             name: Create S3 bucket policy
-            environment:
-              S3_TEMPLATE_POLICY_NAME: s3bucketstack
             command: |
-              aws cloudformation create-stack --stack-name $S3_TEMPLATE_POLICY_NAME --template-body file://cf/s3bucketpolicy.yaml
+              aws cloudformation create-stack --stack-name s3bucketpolicystack --template-body file://cf/s3bucketpolicy.yaml
 
 
 
