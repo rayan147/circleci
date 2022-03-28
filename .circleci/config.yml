@@ -58,6 +58,46 @@ commands:
               cd build
               zip ../build.zip -r * .[^.]*
               echo "Build successful"
+  create-iam-user:
+     description: "Create IAM user"
+     steps:
+        - run:
+            name: Create IAM user
+            environment:
+               IAM_TEMPLATE_NAME:iamstack
+            command: |
+              aws cloudformation create-stack --stack-name $IAM_TEMPLATE_NAME --template-body file://cf/iam.yaml --capabilities CAPABILITY_NAMED_IAM
+  create-s3-all-policy:
+      description: "Create S3 all policy"
+      steps:
+          - run:
+              name: Create S3 all policy
+              environment:
+                S3_ALL_POLICY_NAME:s3-all-policy-stack
+              command: |
+                aws cloudformation create-stack --stack-name $S3_ALL_POLICY_NAME --template-body file://cf/s3policy.yaml --capabilities CAPABILITY_NAMED_IAM
+  create-s3buckets:
+      description: "Create S3 buckets"
+      steps:
+        - run:
+            name: Create S3 buckets
+            environment:
+              S3_TEMPLATE_BUCKET_NAME:s3bucketstack
+            command: |
+              aws cloudformation create-stack --stack-name $S3_TEMPLATE_BUCKET_NAME --template-body file://cf/s3buckets.yaml 
+            
+  create-s3bucket-policy:
+      description: "Create S3 bucket policy"
+      steps:
+        - run:
+            name: Create S3 bucket policy
+            environment:
+              S3_TEMPLATE_POLICY_NAME:s3bucketstack
+            command: |
+              aws cloudformation create-stack --stack-name $S3_TEMPLATE_POLICY_NAME --template-body file://cf/s3bucketpolicy.yaml
+
+
+
 
 
 
@@ -67,20 +107,9 @@ jobs:
     steps:
       - checkout
       - installing-awscliv2
-      - run:
-          name: set env variables and create s3 buckets, and  iam users 
-          command: |
-            export S3_TEMPLATE_POLICY_NAME="s3bucketpolicy"
-            export S3_TEMPLATE_BUCKET_NAME="s3buckets"
-            export IAM_TEMPLATE_NAME="iam"
-            source ~/.bashrc
-            echo $S3_TEMPLATE_POLICY_NAME
-            echo $S3_TEMPLATE_BUCKET_NAME
-            echo $IAM_TEMPLATE_NAME
-            cd ~/repo/cf
-            sudo chmod +x ./create-s3-bucket.sh
-            ./create-s3-bucket.sh
-            echo "S3 bucket created"
+      - create-iam-user
+      - create-s3buckets
+      - create-s3bucket-policy
 
 
       
