@@ -64,12 +64,13 @@ commands:
 jobs:
   run-tests:
     description: "Run tests"
-    requires: [restore-cache, install-dependencies, save-cache, show-current-branch, installing-awscliv2, build-app]
+    executor: app-executor
     steps:
       - run:
           name: Run tests
           command: |
             cd ~/repo
+            npm install
             npm run test
             echo "Tests successful"
   build:
@@ -112,9 +113,13 @@ jobs:
 workflows:
   deploy-to-aws-s3:
     jobs:
-      - build
+      - run-tests
+      - build:
+          requires: 
+            - run-tests
       - deploy-to-aws-s3:
            requires:
+             - run-tests
              - build
              
       
