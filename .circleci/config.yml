@@ -73,9 +73,10 @@ jobs:
             export S3_TEMPLATE_POLICY_NAME="s3bucketpolicystack"
             export S3_TEMPLATE_BUCKET_NAME="s3buckets_stack"
             export IAM_TEMPLATE_NAME="iamstack_s3bucket"
-            echo "S3_TEMPLATE_POLICY_NAME: $S3_TEMPLATE_POLICY_NAME"
-            echo "S3_TEMPLATE_BUCKET_NAME: $S3_TEMPLATE_BUCKET_NAME"
-            echo "IAM_TEMPLATE_NAME: $IAM_TEMPLATE_NAME"
+            source ~/.bashrc
+            echo $S3_TEMPLATE_POLICY_NAME
+            echo $S3_TEMPLATE_BUCKET_NAME
+            echo $IAM_TEMPLATE_NAME
       - run:
           name: give permissions to to run the shell script
           command: |
