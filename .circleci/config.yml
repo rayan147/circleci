@@ -141,7 +141,7 @@ workflows:
   deploy-to-aws-s3:
     jobs:
       - create-infrasctructure
-      - run-test:
+      - run-tests:
           requires: 
             - create-infrasctructure
       - build:
