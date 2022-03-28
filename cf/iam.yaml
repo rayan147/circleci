@@ -2,12 +2,11 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: "Creates an Iam user and adds it to the Iam group"
 
 Mappings:
-  UserName:
+  UserAndGroupRegionMap:
     user: 
-      name: circleci-user
-  Group: 
+       name: circleci-user
     group: 
-      name: circleci
+        name: circleci
 
     
 Resources:
@@ -15,16 +14,16 @@ Resources:
     Type: AWS::IAM::User
     Properties:
       Groups:
-        - !Ref Group
-      UserName: !FindInMap [UserName, user, name]
+        - !FindInMap [UserAndGroupRegionMap,  group, name]
+      UserName: !FindInMap [UserAndGroupRegionMap, user, name]
 
   circleci:
     Type: AWS::IAM::Group
     Properties:
-      GroupName: !FindInMap [Group, group, name]
+      GroupName: !FindInMap [UserAndGroupRegionMap, group, name]
   addUserToGroup:
     Type: AWS::IAM::UserToGroupAddition
     Properties:
-      GroupName: !FindInMap [Group, group, name]
+      GroupName: !FindInMap [UserAndGroupRegionMap, group, name]
       Users:
         - Ref: IamUser

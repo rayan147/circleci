@@ -3,7 +3,7 @@ Description: "Creates three s3 buckets, prod,stage, and dev"
 
 
 Mappings:
-  BucketNames:
+  BucketNamesMap:
     prod: 
       name: prod-rayan147-bucket
     stage: 
@@ -16,7 +16,7 @@ Resources:
   ProdS3:
     Type: "AWS::S3::Bucket"
     Properties:
-      BucketName: !FindInMap [BucketNames, prod, name]
+      BucketName: !FindInMap [BucketNamesMap, prod, name]
       AccessControl: "PublicRead"
       VersioningConfiguration: 
         Status: "Enabled"
@@ -27,7 +27,7 @@ Resources:
   StageS3:
     Type: "AWS::S3::Bucket"
     Properties:
-      BucketName: !FindInMap [BucketNames, stage, name]
+      BucketName: !FindInMap [BucketNamesMap, stage, name]
       AccessControl: "PublicRead"
       VersioningConfiguration: 
         Status: "Enabled"
@@ -38,7 +38,7 @@ Resources:
   DevS3:
      Type: "AWS::S3::Bucket"
      Properties:
-       BucketName: !FindInMap [BucketNames, dev, name]
+       BucketName: !FindInMap [BucketNamesMap, dev, name]
        AccessControl: "PublicRead"
        VersioningConfiguration: 
             Status: "Enabled"

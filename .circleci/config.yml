@@ -71,7 +71,7 @@ commands:
           - run:
               name: Create S3 all policy
               command: |
-                aws cloudformation create-stack --stack-name s3-all-policy-stack --template-body file://cf/s3policy.yaml --capabilities CAPABILITY_NAMED_IAM
+                aws cloudformation create-stack --stack-name s3-all-policy-stack --template-body file://cf/s3policy.yaml --capabilities CAPABILITY_IAM
   create-s3buckets:
       description: "Create S3 buckets"
       steps:
