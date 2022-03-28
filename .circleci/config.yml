@@ -27,7 +27,7 @@ commands:
          name: install dependencies
          command: npm install
   save-cache:
-    description: "Save cache"
+    description: "Save cache."
     steps:
       - save_cache:
           paths:
@@ -89,9 +89,6 @@ commands:
             name: Create S3 bucket policy
             command: |
               aws cloudformation create-stack --stack-name s3bucketpolicystack --template-body file://cf/s3bucketpolicy.yaml
-
-
-
 
 
 
