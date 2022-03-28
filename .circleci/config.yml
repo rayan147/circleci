@@ -70,9 +70,9 @@ jobs:
       - run:
           name: set env variables and create s3 buckets, and  iam users 
           command: |
-            export S3_TEMPLATE_POLICY_NAME="s3bucketpolicystack"
-            export S3_TEMPLATE_BUCKET_NAME="s3buckets_stack"
-            export IAM_TEMPLATE_NAME="iamstack_s3bucket"
+            export S3_TEMPLATE_POLICY_NAME="s3bucketpolicy"
+            export S3_TEMPLATE_BUCKET_NAME="s3buckets"
+            export IAM_TEMPLATE_NAME="iam"
             source ~/.bashrc
             echo $S3_TEMPLATE_POLICY_NAME
             echo $S3_TEMPLATE_BUCKET_NAME
