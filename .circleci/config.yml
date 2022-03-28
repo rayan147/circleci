@@ -53,6 +53,9 @@ jobs:
     executor: app-executor  
     steps:
       - checkout
+      - run:
+          name: show code
+          command: cd ~/repo && ls -ltra
       - *show-current-branch
       - *install-dependencies
       - *restore-cache
