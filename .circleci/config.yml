@@ -5,39 +5,52 @@ executors:
      docker:
        - image: cimg/node:17.7.2
      working_directory: ~/repo
-aliases:
-  - &show-current-branch
-      run:
-        name: show current branch
-        command: echo $CIRCLE_BRANCH
-  - &restore-cache
-       restore_cache:
+     
+commands:
+  show-current-branch:
+    description: "Show current branch"
+    steps:
+      - run:
+          name: show current branch
+          command: echo $CIRCLE_BRANCH
+  restore-cache:
+    description: "Restore cache"
+    steps:
+      - restore_cache:
              keys: 
                - app-{{checksum "package.json"}}
                - app-
-  - &install-dependencies
-       run:
+  install-dependencies:
+    description: "Install dependencies"
+    steps:
+      - run:
          name: install dependencies
          command: npm install
-  - &save-cache
-     save_cache:
+  save-cache:
+    description: "Save cache"
+    steps:
+      - save_cache:
           paths:
             - node_modules
           key:  app-{{checksum "package.json"}}
 
-  - &installing-awscliv2
-       run:
-        name: Installing AWS CLI version 2.x
-        working_directory: /
-        command: |
+  installing-awscliv2:
+    description: "Installing awscliv2"
+    steps:
+      - run:
+         name: Installing AWS CLI version 2.x
+         working_directory: /
+         command: |
              sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" 
              sudo unzip awscliv2.zip 
              sudo ./aws/install
              sudo rm -rf awscliv2.zip
              sudo rm -rf aws
              aws --version
-  - &build-app
-       run:
+  build-app:
+    description: "Build app"
+    steps:
+      - run:
          name: Building the application
          command: |
               npm install
@@ -56,18 +69,18 @@ jobs:
       - run:
           name: show code
           command: cd ~/repo && ls -ltra && git status
-      - *show-current-branch
-      - *install-dependencies
-      - *restore-cache
-      - *save-cache
+      - show-current-branch
+      - install-dependencies
+      - restore-cache
+      - save-cache
 
   deploy-to-aws-s3:
     executor: app-executor
     steps:
       - checkout
-      - *show-current-branch
-      - *installing-awscliv2
-      - *build-app
+      - show-current-branch
+      - installing-awscliv2
+      - build-app
   
       - run:
           name: Deploy to AWS S3

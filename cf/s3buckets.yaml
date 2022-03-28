@@ -1,11 +1,19 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: "Creates three s3 buckets, prod,stage, and dev"
 
+
+Mappings:
+  BucketNames:
+    prod: prod-rayan147-bucket
+    stage: stage-rayan147-bucket
+    dev: dev-rayan147-bucket
+
+
 Resources:
   ProdS3:
     Type: "AWS::S3::Bucket"
     Properties:
-      BucketName: prod-rayan147-bucket
+      BucketName: !FindInMap [BucketNames, prod, BucketNames.prod]
       AccessControl: "PublicRead"
       VersioningConfiguration: 
         Status: "Enabled"
@@ -16,7 +24,7 @@ Resources:
   StageS3:
     Type: "AWS::S3::Bucket"
     Properties:
-      BucketName: stage-rayan147-bucket
+      BucketName: !FindInMap [BucketNames, stage, BucketNames.stage]
       AccessControl: "PublicRead"
       VersioningConfiguration: 
         Status: "Enabled"
@@ -27,7 +35,7 @@ Resources:
   DevS3:
      Type: "AWS::S3::Bucket"
      Properties:
-       BucketName: dev-rayan147-bucket
+       BucketName: !FindInMap [BucketNames, dev, BucketNames.dev]
        AccessControl: "PublicRead"
        VersioningConfiguration: 
             Status: "Enabled"

@@ -1,11 +1,17 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description:  "Allow s3:GetObject permission for all objects in the bucket"
 
+Mappings:
+  BucketNames:
+    prod: prod-rayan147-bucket
+    stage: stage-rayan147-bucket
+    dev: dev-rayan147-bucket
+
 Resources:
   S3BucketPermissionProd:
     Type: "AWS::S3::BucketPolicy"
     Properties:
-        Bucket: prod-rayan147-bucket
+        Bucket: !FindInMap [BucketNames, prod, BucketNames.prod]
         PolicyDocument:
           Version: "2012-10-17"
           Statement:
@@ -19,7 +25,7 @@ Resources:
   S3BucketPermissionStage:
     Type: "AWS::S3::BucketPolicy"
     Properties:
-        Bucket: stage-rayan147-bucket
+        Bucket: !FindInMap [BucketNames, stage, BucketNames.stage]
         PolicyDocument:
           Version: "2012-10-17"
           Statement:
@@ -32,7 +38,7 @@ Resources:
   S3BucketPermissionDev:
     Type: "AWS::S3::BucketPolicy"
     Properties:
-        Bucket: dev-rayan147-bucket
+        Bucket: !FindInMap [BucketNames, dev, BucketNames.dev]
         PolicyDocument:
           Version: "2012-10-17"
           Statement:
