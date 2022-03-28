@@ -3,9 +3,11 @@ Description: "Creates an Iam user and adds it to the Iam group"
 
 Mappings:
   UserName:
-    user: circleci-user
+    user: 
+      name: circleci-user
   Group: 
-    group: circleci
+    group: 
+      name: circleci
 
     
 Resources:
@@ -14,15 +16,15 @@ Resources:
     Properties:
       Groups:
         - !Ref Group
-      UserName: !FindInMap [UserName, user, UserName.user]
+      UserName: !FindInMap [UserName, user, name]
 
   circleci:
     Type: AWS::IAM::Group
     Properties:
-      GroupName: !FindInMap [Group, group, Group.group]
+      GroupName: !FindInMap [Group, group, name]
   addUserToGroup:
     Type: AWS::IAM::UserToGroupAddition
     Properties:
-      GroupName: !FindInMap [Group, group, Group.group]
+      GroupName: !FindInMap [Group, group, name]
       Users:
         - Ref: IamUser

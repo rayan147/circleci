@@ -62,6 +62,29 @@ commands:
 
 
 jobs:
+  create-infrasctructure:
+    executor: app-executor
+    steps:
+      - checkout
+      - installing-awscliv2
+      - run:
+          name: set env variables
+          command: |
+            export S3_TEMPLATE_POLICY_NAME="s3bucketpolicystack"
+            export S3_TEMPLATE_BUCKET_NAME="s3buckets_stack"
+            export IAM_TEMPLATE_NAME="iamstack_s3bucket"
+            echo "S3_TEMPLATE_POLICY_NAME: $S3_TEMPLATE_POLICY_NAME"
+            echo "S3_TEMPLATE_BUCKET_NAME: $S3_TEMPLATE_BUCKET_NAME"
+            echo "IAM_TEMPLATE_NAME: $IAM_TEMPLATE_NAME"
+      - run:
+          name: give permissions to to run the shell script
+          command: |
+            cd ~/repo/cf
+            sudo chmod +x ./create-s3-bucket.sh
+      - run:
+          name: create s3 bucket
+          command: ./create-s3-bucket.sh
+      
   run-tests:
     description: "Run tests"
     executor: app-executor
@@ -117,7 +140,10 @@ jobs:
 workflows:
   deploy-to-aws-s3:
     jobs:
-      - run-tests
+      - create-infrasctructure
+      - run-test:
+          requires: 
+            - create-infrasctructure
       - build:
           requires: 
             - run-tests
