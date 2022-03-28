@@ -55,7 +55,7 @@ jobs:
       - checkout
       - run:
           name: show code
-          command: cd ~/repo && ls -ltra
+          command: cd ~/repo && ls -ltra && git status
       - *show-current-branch
       - *install-dependencies
       - *restore-cache
