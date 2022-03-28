@@ -72,15 +72,20 @@ jobs:
       - run:
           name: Deploy to AWS S3
           command: |
-            if ["$CIRCLE_BRANCH" == "main"] then
-              aws --region $AWS_REGION s3 sync ~/repo/build s3://$PROD_BUCKET --delete
-            elif ["$CIRCLE_BRANCH" == "staging"] then
-              aws --region $AWS_REGION s3 sync ~/repo/build s3://$STAGE_BUCKET --delete
-            elif ["$CIRCLE_BRANCH" == "dev"] then
-              aws --region $AWS_REGION s3 sync ~/repo/build s3://$DEV_BUCKET --delete
-            else
-              echo "No branch found"
-            fi
+            case $CIRCLE_BRANCH in
+              main)
+               aws --region $AWS_REGION s3 sync ~/repo/build s3://$PROD_BUCKET --delete
+                ;;
+              stage)
+                aws --region $AWS_REGION s3 sync ~/repo/build s3://$STAGE_BUCKET --delete
+                  ;;
+               dev)
+                aws --region $AWS_REGION s3 sync ~/repo/build s3://$DEV_BUCKET --delete
+                  ;;
+              *)
+                echo "No bucket found for branch $CIRCLE_BRANCH"
+                ;;
+            esac
 workflows:
   deploy-to-aws-s3:
     jobs:
