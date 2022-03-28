@@ -68,7 +68,7 @@ jobs:
       - checkout
       - installing-awscliv2
       - run:
-          name: set env variables
+          name: set env variables and create s3 buckets, and  iam users 
           command: |
             export S3_TEMPLATE_POLICY_NAME="s3bucketpolicystack"
             export S3_TEMPLATE_BUCKET_NAME="s3buckets_stack"
@@ -77,16 +77,10 @@ jobs:
             echo $S3_TEMPLATE_POLICY_NAME
             echo $S3_TEMPLATE_BUCKET_NAME
             echo $IAM_TEMPLATE_NAME
-      - run:
-          name: give permissions to to run the shell script
-          command: |
             cd ~/repo/cf
             sudo chmod +x ./create-s3-bucket.sh
-      - run:
-          name: create s3 bucket
-          command: |
-            cd ~/repo/cf
             ./create-s3-bucket.sh
+
 
       
   run-tests:
