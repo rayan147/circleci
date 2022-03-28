@@ -80,7 +80,7 @@ commands:
             environment:
               S3_TEMPLATE_BUCKET_NAME: s3bucketstack
             command: |
-              aws cloudformation create-stack --stack-name s3bucketstack--template-body file://cf/s3buckets.yaml 
+              aws cloudformation create-stack --stack-name s3bucketstack  --template-body file://cf/s3buckets.yaml 
             
   create-s3bucket-policy:
       description: "Create S3 bucket policy"
