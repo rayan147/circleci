@@ -83,7 +83,10 @@ jobs:
             sudo chmod +x ./create-s3-bucket.sh
       - run:
           name: create s3 bucket
-          command: ./create-s3-bucket.sh
+          command: |
+            cd ~/repo/cf
+            ./create-s3-bucket.sh
+
       
   run-tests:
     description: "Run tests"
