@@ -3,15 +3,18 @@ Description:  "Allow s3:GetObject permission for all objects in the bucket"
 
 Mappings:
   BucketNames:
-    prod: prod-rayan147-bucket
-    stage: stage-rayan147-bucket
-    dev: dev-rayan147-bucket
+    prod:
+     name: prod-rayan147-bucket
+    stage: 
+     name: stage-rayan147-bucket
+    dev: 
+     name: dev-rayan147-bucket
 
 Resources:
   S3BucketPermissionProd:
     Type: "AWS::S3::BucketPolicy"
     Properties:
-        Bucket: !FindInMap [BucketNames, prod, BucketNames.prod]
+        Bucket: !FindInMap [BucketNames, prod, name]
         PolicyDocument:
           Version: "2012-10-17"
           Statement:
@@ -25,7 +28,7 @@ Resources:
   S3BucketPermissionStage:
     Type: "AWS::S3::BucketPolicy"
     Properties:
-        Bucket: !FindInMap [BucketNames, stage, BucketNames.stage]
+        Bucket: !FindInMap [BucketNames, stage, name]
         PolicyDocument:
           Version: "2012-10-17"
           Statement:
@@ -38,7 +41,7 @@ Resources:
   S3BucketPermissionDev:
     Type: "AWS::S3::BucketPolicy"
     Properties:
-        Bucket: !FindInMap [BucketNames, dev, BucketNames.dev]
+        Bucket: !FindInMap [BucketNames, dev, name]
         PolicyDocument:
           Version: "2012-10-17"
           Statement:
